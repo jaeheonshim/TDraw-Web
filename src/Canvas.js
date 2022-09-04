@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import drawJson from "./drawInfo.json"
 
 const sinDeg = (a) => {
     return Math.sin(a / 180 * Math.PI);
@@ -18,8 +17,9 @@ const transform = (x, y, theta) => {
 export default function Canvas(props) {
     const canvasRef = useRef(null);
 
+    const drawJson = props.json;
+
     const [showTurtle, setShowTurtle] = useState(false);
-    const [currentFrame, setCurrentFrame] = useState(drawJson.points.length - 1);
     
     const drawTurtle = (x, y, heading, context) => {
         const width = 20;
@@ -39,30 +39,30 @@ export default function Canvas(props) {
 
     const toCenterPoint = (x, y, context) => {
         return [
-            x + context.canvas.width / 2,
-            context.canvas.height / 2 - y
+            Math.round(x + context.canvas.width / 2),
+            Math.round(context.canvas.height / 2 - y)
         ]
     }
 
     const drawScene = (context) => {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-        for(let i = 1; i <= currentFrame; ++i) {
+        context.beginPath();
+
+        for(let i = 1; i <= props.frame; ++i) {
             const prev = drawJson.points[i - 1];
             const curr = drawJson.points[i];
+            if(!curr) break;
 
             context.moveTo(...toCenterPoint(prev.x, prev.y, context));
-            if(curr.draw) {
-                context.lineTo(...toCenterPoint(curr.x, curr.y, context));
-                context.stroke();
-            } else {
-                context.moveTo(...toCenterPoint(curr.x, curr.y, context));
-            }
+            context.lineTo(...toCenterPoint(curr.x, curr.y, context));
         }
 
-        const lastLocation = drawJson.points[currentFrame];
+        context.stroke();
+
+        const lastLocation = drawJson.points[props.frame];
         if(showTurtle) {
-            drawTurtle(lastLocation.x, lastLocation.y, lastLocation.heading, context);
+            drawTurtle(Math.floor(lastLocation.x), Math.floor(lastLocation.y), lastLocation.heading, context);
         }
     }
 
@@ -72,7 +72,7 @@ export default function Canvas(props) {
 
         context.fillStyle = "#000000";
         drawScene(context);
-    }, []);
+    }, [props.frame]);
 
     return <canvas style={{border: "1px solid #e0dede"}} ref={canvasRef} width={drawJson.width} height={drawJson.height} {...props} />
 }
