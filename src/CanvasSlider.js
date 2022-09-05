@@ -4,6 +4,6 @@ export default function CanvasSlider(props) {
     }
 
     return (
-        <input type="range" class="form-range" min="0" onChange={onChange} max={props.lastFrame} step={1} value={props.currentFrame} />
+        <input type="range" className="form-range" min="0" onChange={onChange} max={props.lastFrame} step={1} value={props.currentFrame} />
     )
 }
