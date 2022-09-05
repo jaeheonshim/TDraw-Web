@@ -3,10 +3,10 @@ import { useContext } from "react";
 import { TDrawContext } from "./App";
 
 export default function CodeEditor() {
-    const tContext = useContext(TDrawContext);
+    const {TDrawState, setTDrawState} = useContext(TDrawContext);
     
     function handleEditorChange(value, event) {
-        tContext.setTDrawState({...tContext.TDrawState, code: value});
+        setTDrawState({...TDrawState, code: value});
     }
 
     return (

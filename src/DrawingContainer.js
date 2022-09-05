@@ -1,12 +1,18 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { TDrawContext } from "./App";
 import Canvas from "./Canvas"
 import CanvasControls from "./CanvasControls"
 import CanvasSlider from "./CanvasSlider";
-import drawJson from "./drawInfo.json"
 
 export default function DrawingContainer() {
-    const [currentFrame, setCurrentFrame] = useState(250);
-    const [lastFrame, setLastFrame] = useState(drawJson.points.length - 1);
+    const {TDrawState, setTDrawState} = useContext(TDrawContext);
+    const [currentFrame, setCurrentFrame] = useState(0);
+    const [lastFrame, setLastFrame] = useState(TDrawState.drawJson ? TDrawState.drawJson.points.length - 1 : 0);
+
+    useEffect(() => {
+        setCurrentFrame(0);
+        setLastFrame(TDrawState.drawJson ? TDrawState.drawJson.points.length - 1 : 0)
+    }, [TDrawState.drawJson]);
 
     const nextFrame = () => {
         if(currentFrame >= lastFrame) return;
@@ -21,7 +27,7 @@ export default function DrawingContainer() {
     }
 
     const endFrame = () => {
-        setCurrentFrame(drawJson.points.length - 1);
+        setCurrentFrame(TDrawState.drawJson.points.length - 1);
     }
 
     const startFrame = () => {
@@ -36,7 +42,7 @@ export default function DrawingContainer() {
 
     return (
         <div>
-            <Canvas json={drawJson} frame={currentFrame} />
+            <Canvas json={TDrawState.drawJson} frame={currentFrame} />
             <CanvasControls currentFrame={currentFrame} lastFrame={lastFrame} onForward={nextFrame} onBack={previousFrame} onStart={startFrame} onEnd={endFrame} />
             <CanvasSlider onChange={setFrame} lastFrame={lastFrame} currentFrame={currentFrame} />
             frame: {currentFrame}

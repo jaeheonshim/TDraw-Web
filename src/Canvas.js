@@ -46,6 +46,7 @@ export default function Canvas(props) {
 
     const drawScene = (context) => {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        if(!drawJson) return;
 
         context.beginPath();
 
@@ -74,5 +75,5 @@ export default function Canvas(props) {
         drawScene(context);
     }, [props.frame]);
 
-    return <canvas style={{border: "1px solid #e0dede"}} ref={canvasRef} width={drawJson.width} height={drawJson.height} {...props} />
+    return <canvas style={{border: "1px solid #e0dede"}} ref={canvasRef} width={drawJson && drawJson.width} height={drawJson && drawJson.height} {...props} />
 }

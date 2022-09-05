@@ -7,6 +7,8 @@ import CodeEditor from './CodeEditor';
 import { createContext, useState } from 'react';
 import CodeRunToolbar from './CodeRunToolbar';
 import RunConsole from './RunConsole';
+import axios from 'axios';
+import { Buffer } from 'buffer';
 
 export const TDrawContext = createContext();
 
@@ -19,6 +21,16 @@ function App() {
 
   function onRun() {
     setIsRunning(true);
+
+    axios.post("/submissions/run", {
+      userProgram: Buffer.from(TDrawState.code).toString("base64")
+    }).then((response) => {
+      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString(), drawJson: response.data.drawJson});
+      
+    }).finally(() => {
+      setIsRunning(false);
+    })
+
     console.log("Running code!");
   }
 
