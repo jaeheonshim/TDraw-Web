@@ -9,12 +9,14 @@ import CodeRunToolbar from './CodeRunToolbar';
 import RunConsole from './RunConsole';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import { Col, Container, Navbar, Row, Tab, Tabs } from 'react-bootstrap';
+import Editor from '@monaco-editor/react';
 
 export const TDrawContext = createContext();
 
 function App() {
   const [TDrawState, setTDrawState] = useState({
-    consoleContent: "Welcome to TDraw!"
+    consoleContent: "Welcome to TDraw!\nhi\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
   });
   
   const [isRunning, setIsRunning] = useState(false);
@@ -35,12 +37,31 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App h-100">
       <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
-        <CodeEditor />
-        <CodeRunToolbar isRunning={isRunning} onRun={onRun} />
-        <RunConsole content={TDrawState.consoleContent} />
-        <DrawingContainer />
+        <Container className="h-100 d-flex flex-column" fluid>
+          <Navbar className="no-gutters" bg="light" variant="light">
+            <Container fluid>
+              <Navbar.Brand href="#home">TDraw</Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Row className="no-gutters flex-grow-1" style={{flexBasis: "0"}}>
+            <Col className="h-100 d-flex flex-column overflow-auto">
+              <CodeRunToolbar className="pt-1 pb-1 mb-2 border-bottom" />
+              <div className="flex-grow-1">
+                <CodeEditor />
+              </div>
+            </Col>
+            <Col className="border-left d-flex flex-column h-100">
+              <Row className="flex-shrink-0">
+                <DrawingContainer />
+              </Row>
+              <Row className="flex-grow-1 overflow-auto">
+                <RunConsole />
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </TDrawContext.Provider>
     </div>
   );

@@ -45,7 +45,6 @@ export default function DrawingContainer() {
             <Canvas json={TDrawState.drawJson} frame={currentFrame} />
             <CanvasControls currentFrame={currentFrame} lastFrame={lastFrame} onForward={nextFrame} onBack={previousFrame} onStart={startFrame} onEnd={endFrame} />
             <CanvasSlider onChange={setFrame} lastFrame={lastFrame} currentFrame={currentFrame} />
-            frame: {currentFrame}
         </div>
     )
 }

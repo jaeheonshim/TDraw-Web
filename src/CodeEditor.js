@@ -6,10 +6,10 @@ export default function CodeEditor() {
     const {TDrawState, setTDrawState} = useContext(TDrawContext);
     
     function handleEditorChange(value, event) {
-        setTDrawState({...TDrawState, code: value});
+        //setTDrawState({...TDrawState, code: value});
     }
 
     return (
-        <Editor height="90vh" defaultLanguage="java" onChange={handleEditorChange} />
+        <Editor defaultLanguage="java" fixedOverflowWidgets={true} automaticLayout={true} onChange={handleEditorChange} />
     )
 }

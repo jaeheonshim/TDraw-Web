@@ -75,5 +75,5 @@ export default function Canvas(props) {
         drawScene(context);
     }, [props.frame]);
 
-    return <canvas style={{border: "1px solid #e0dede"}} ref={canvasRef} width={drawJson && drawJson.width} height={drawJson && drawJson.height} {...props} />
+    return <canvas style={{border: "1px solid #e0dede", width: "42vw"}} ref={canvasRef} width={drawJson && drawJson.width || 760} height={drawJson && drawJson.height || 510} {...props} />
 }
