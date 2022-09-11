@@ -19,7 +19,7 @@ function App() {
   const example_id = queryParams.get("example") && queryParams.get("example").trim().toLowerCase();
 
   const [TDrawState, setTDrawState] = useState({
-    consoleContent: "Welcome to TDraw!\n\nTDraw is an open source turtle graphics web platform for the Java programming language.\nClick on \"Documentation\" in the header to read the TDraw documentation, or check out some examples to help you get started."
+    consoleContent: "Welcome to TDraw!\n\nTDraw is an open source turtle graphics web platform for the Java programming language."
   });
   
   const [isRunning, setIsRunning] = useState(false);
@@ -71,13 +71,13 @@ function App() {
             </Nav>
           </Navbar>
           <Row className="content">
-            <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto">
+            <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto" style={{minWidth: "30vh"}}>
               <CodeRunToolbar example={examples[example_id]} isRunning={isRunning} onRemix={onRemix} onReset={onReset} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
               <div className="flex-grow-1">
                 <CodeEditor example={examples[example_id]} />
               </div>
             </Col>
-            <Col className="border-left d-flex flex-column h-100">
+            <Col className="border-left d-flex flex-column h-100 w-50">
               <Row className="flex-shrink-0 text-center">
                 <DrawingContainer />
               </Row>
