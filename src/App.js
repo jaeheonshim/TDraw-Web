@@ -8,7 +8,7 @@ import CodeRunToolbar from './Coding/CodeRunToolbar';
 import RunConsole from './Coding/RunConsole';
 import axios from 'axios';
 import { Buffer } from 'buffer';
-import { Col, Container, Navbar, Row, Tab, Tabs } from 'react-bootstrap';
+import { Col, Container, Nav, Navbar, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
 import Editor from '@monaco-editor/react';
 import examples from "./examples.json"
 
@@ -57,9 +57,17 @@ function App() {
       <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
         <Container fluid>
           <Navbar bg="light" variant="light">
-            <Container fluid>
               <Navbar.Brand href="#home">TDraw</Navbar.Brand>
-            </Container>
+              <Nav className="me-auto">
+              <NavDropdown title="Examples">
+              <NavDropdown.Item href="?example=spiral">Spiral</NavDropdown.Item>
+              <NavDropdown.Item href="?example=square_spiral">Square Spiral</NavDropdown.Item>
+              <NavDropdown.Item href="?example=hexagonal_spiral">Hexagonal Spiral</NavDropdown.Item>
+              <NavDropdown.Item href="?example=projectile_motion">Projectile Motion</NavDropdown.Item>
+              <NavDropdown.Item href="?example=sierpinski">Sierpinski Triangle</NavDropdown.Item>
+              <NavDropdown.Item href="?example=random">Random</NavDropdown.Item>
+            </NavDropdown>
+            </Nav>
           </Navbar>
           <Row className="content">
             <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto">
