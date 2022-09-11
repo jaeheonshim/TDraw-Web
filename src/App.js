@@ -16,7 +16,7 @@ export const TDrawContext = createContext();
 
 function App() {
   const [TDrawState, setTDrawState] = useState({
-    consoleContent: "Welcome to TDraw!\n\n\n\n\n\n\\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTDraw is an open source turtle graphics web platform for the Java programming language."
+    consoleContent: "Welcome to TDraw!\n\nTDraw is an open source turtle graphics web platform for the Java programming language."
   });
   
   const [isRunning, setIsRunning] = useState(false);
@@ -36,6 +36,11 @@ function App() {
     console.log("Running code!");
   }
 
+  function onReset() {
+    localStorage.removeItem("code");
+    window.location.reload();
+  }
+
   return (
     <div className="App h-100">
       <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
@@ -47,7 +52,7 @@ function App() {
           </Navbar>
           <Row className="content">
             <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto">
-              <CodeRunToolbar isRunning={isRunning} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
+              <CodeRunToolbar isRunning={isRunning} onReset={onReset} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
               <div className="flex-grow-1">
                 <CodeEditor />
               </div>

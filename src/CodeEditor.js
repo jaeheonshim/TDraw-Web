@@ -1,8 +1,8 @@
 import Editor from "@monaco-editor/react";
+import { Buffer } from 'buffer';
+import * as monaco from "monaco-editor"
 import { useContext, useEffect, useRef } from "react";
 import { TDrawContext } from "./App";
-import ReactResizeDetector from 'react-resize-detector';
-import { ResponsiveMonacoEditor } from "responsive-react-monaco-editor";
 
 const defaultCode = `
 import com.jaeheonshim.tdraw.turtle.Turtle;
@@ -43,7 +43,11 @@ export default function CodeEditor() {
         localStorage.setItem("code", Buffer.from(value).toString("base64"));
     }
 
+    const options = {
+        automaticLayout: true
+    }
+
     return (
-        <ResponsiveMonacoEditor height="100%" language="java" value={TDrawState.code} onChange={handleEditorChange} />
+        <Editor options={options} defaultLanguage="java" defaultValue={TDrawState.code} onChange={handleEditorChange} />
     )
 }
