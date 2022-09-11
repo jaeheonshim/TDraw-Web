@@ -4,24 +4,7 @@ import * as monaco from "monaco-editor"
 import { useContext, useEffect, useRef } from "react";
 import { TDrawContext } from "../App";
 
-const defaultCode = `
-import java.awt.*;
-import com.jaeheonshim.tdraw.turtle.Turtle;
-
-public class Main {
-    public static void main(String[] args) throws IOException {
-        Turtle t = new Turtle();
-
-        t.forward(57);
-        t.counterClockwise(90);
-        t.penDown();
-        for (int i = 0; i < 360; ++i) {
-            t.forward(1);
-            t.counterClockwise(1);
-        }
-    }
-}
-`.trim();
+const defaultCode = "aW1wb3J0IGphdmEuYXd0Lio7CmltcG9ydCBjb20uamFlaGVvbnNoaW0udGRyYXcudHVydGxlLlR1cnRsZTsKCi8qKgoqIFdlbGNvbWUgdG8gVERyYXchIFlvdSBjYW4gd3JpdGUgeW91ciBjb2RlIGhlcmUgaW4gdGhlIGVkaXRvci4KKgoqIE9uY2UgeW91J3JlIHJlYWR5IHRvIHRyeSB5b3VyIGNvZGUgb3V0LCBjbGljayB0aGUgZ3JlZW4gIlJ1biEiIGJ1dHRvbi4KKiBJZiB5b3UgZXZlciB3YW50IHRvIHJldHVybiB0byB0aGUgZGVmYXVsdCBjb2RlLCBjbGljayAiUmVzZXQiLgoqCiogUmVtZW1iZXIsIHRoZSBURHJhdyBjYW52YXMgaXMgYSA3NjB4NTEwIGNvb3JkaW5hdGUgZ3JpZCwgd2l0aCAoMCwgMCkgYXQgdGhlIGNlbnRlci4KKi8KcHVibGljIGNsYXNzIE1haW4gewogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgdGhyb3dzIElPRXhjZXB0aW9uIHsKICAgICAgICBUdXJ0bGUgdCA9IG5ldyBUdXJ0bGUoKTsKCiAgICAgICAgdC5mb3J3YXJkKDU3KTsKICAgICAgICB0LmNvdW50ZXJDbG9ja3dpc2UoOTApOwogICAgICAgIHQucGVuRG93bigpOwoKICAgICAgICAvLyBkcmF3cyBhIGNpcmNsZQogICAgICAgIGZvciAoaW50IGkgPSAwOyBpIDwgMzYwOyArK2kpIHsKICAgICAgICAgICAgdC5mb3J3YXJkKDEpOwogICAgICAgICAgICB0LmNvdW50ZXJDbG9ja3dpc2UoMSk7CiAgICAgICAgfQogICAgfQp9".trim();
 
 export default function CodeEditor(props) {
     const { TDrawState, setTDrawState } = useContext(TDrawContext);
@@ -37,7 +20,7 @@ export default function CodeEditor(props) {
         } else if (localStorage.getItem("code")) {
             setTDrawState({ ...TDrawState, code: Buffer.from(localStorage.getItem("code"), "base64").toString() });
         } else {
-            setTDrawState({ ...TDrawState, code: defaultCode });
+            setTDrawState({ ...TDrawState, code: Buffer.from(defaultCode, "base64").toString() });
         }
     }, []);
 

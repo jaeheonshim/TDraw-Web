@@ -19,7 +19,7 @@ function App() {
   const example_id = queryParams.get("example") && queryParams.get("example").trim().toLowerCase();
 
   const [TDrawState, setTDrawState] = useState({
-    consoleContent: "Welcome to TDraw!\n\nTDraw is an open source turtle graphics web platform for the Java programming language."
+    consoleContent: "Welcome to TDraw!\n\nTDraw is an open source turtle graphics web platform for the Java programming language.\nClick on \"Documentation\" in the header to read the TDraw documentation, or check out some examples to help you get started."
   });
   
   const [isRunning, setIsRunning] = useState(false);
@@ -32,7 +32,7 @@ function App() {
       userProgram: Buffer.from(TDrawState.code).toString("base64")
     }).then((response) => {
       const additionalMessage = response.data.drawJson ? `${response.data.drawJson.points.length} movement points` : "";
-      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + "\nRun successfully completed.\n" + additionalMessage, drawJson: response.data.drawJson});
+      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + `\nRun successfully completed. UUID: ${response.data.uuid}\n` + additionalMessage, drawJson: response.data.drawJson});
     }).catch((error) => {
       setTDrawState({...TDrawState, consoleContent: "Run failed. (Server error)"});
     }).finally(() => {
@@ -57,16 +57,17 @@ function App() {
       <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
         <Container fluid>
           <Navbar bg="light" variant="light">
-              <Navbar.Brand href="#home">TDraw</Navbar.Brand>
+              <Navbar.Brand href="/">TDraw</Navbar.Brand>
               <Nav className="me-auto">
-              <NavDropdown title="Examples">
-              <NavDropdown.Item href="?example=spiral">Spiral</NavDropdown.Item>
-              <NavDropdown.Item href="?example=square_spiral">Square Spiral</NavDropdown.Item>
-              <NavDropdown.Item href="?example=hexagonal_spiral">Hexagonal Spiral</NavDropdown.Item>
-              <NavDropdown.Item href="?example=projectile_motion">Projectile Motion</NavDropdown.Item>
-              <NavDropdown.Item href="?example=sierpinski">Sierpinski Triangle</NavDropdown.Item>
-              <NavDropdown.Item href="?example=random">Random</NavDropdown.Item>
-            </NavDropdown>
+                <NavDropdown title="Examples">
+                  <NavDropdown.Item href="?example=spiral">Spiral</NavDropdown.Item>
+                  <NavDropdown.Item href="?example=square_spiral">Square Spiral</NavDropdown.Item>
+                  <NavDropdown.Item href="?example=hexagonal_spiral">Hexagonal Spiral</NavDropdown.Item>
+                  <NavDropdown.Item href="?example=projectile_motion">Projectile Motion</NavDropdown.Item>
+                  <NavDropdown.Item href="?example=sierpinski">Sierpinski Triangle</NavDropdown.Item>
+                  <NavDropdown.Item href="?example=random">Random</NavDropdown.Item>
+                </NavDropdown>
+                <Nav.Link target="_blank" href="https://jaeheonshim.dev/TDraw-Engine/DOCUMENTATION.html">Documentation</Nav.Link>
             </Nav>
           </Navbar>
           <Row className="content">
