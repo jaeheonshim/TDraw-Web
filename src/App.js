@@ -10,10 +10,14 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { Col, Container, Navbar, Row, Tab, Tabs } from 'react-bootstrap';
 import Editor from '@monaco-editor/react';
+import examples from "./examples.json"
 
 export const TDrawContext = createContext();
 
 function App() {
+  const queryParams = new URLSearchParams(window.location.search);
+  const example_id = queryParams.get("example") && queryParams.get("example").trim().toLowerCase();
+
   const [TDrawState, setTDrawState] = useState({
     consoleContent: "Welcome to TDraw!\n\nTDraw is an open source turtle graphics web platform for the Java programming language."
   });
@@ -27,7 +31,8 @@ function App() {
     axios.post("/submissions/run", {
       userProgram: Buffer.from(TDrawState.code).toString("base64")
     }).then((response) => {
-      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + "\nRun successfully completed.", drawJson: response.data.drawJson});
+      const additionalMessage = response.data.drawJson ? `${response.data.drawJson.points.length} movement points` : "";
+      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + "\nRun successfully completed.\n" + additionalMessage, drawJson: response.data.drawJson});
     }).catch((error) => {
       setTDrawState({...TDrawState, consoleContent: "Run failed. (Server error)"});
     }).finally(() => {
@@ -42,6 +47,11 @@ function App() {
     window.location.reload();
   }
 
+  function onRemix() {
+    localStorage.setItem("code", examples[example_id]);
+    window.location = window.location.href.split("?")[0];
+  }
+
   return (
     <div className="App h-100">
       <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
@@ -53,9 +63,9 @@ function App() {
           </Navbar>
           <Row className="content">
             <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto">
-              <CodeRunToolbar isRunning={isRunning} onReset={onReset} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
+              <CodeRunToolbar example={examples[example_id]} isRunning={isRunning} onRemix={onRemix} onReset={onReset} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
               <div className="flex-grow-1">
-                <CodeEditor />
+                <CodeEditor example={examples[example_id]} />
               </div>
             </Col>
             <Col className="border-left d-flex flex-column h-100">

@@ -5,6 +5,7 @@ import { useContext, useEffect, useRef } from "react";
 import { TDrawContext } from "../App";
 
 const defaultCode = `
+import java.awt.*;
 import com.jaeheonshim.tdraw.turtle.Turtle;
 
 public class Main {
@@ -22,7 +23,7 @@ public class Main {
 }
 `.trim();
 
-export default function CodeEditor() {
+export default function CodeEditor(props) {
     const { TDrawState, setTDrawState } = useContext(TDrawContext);
     const editorRef = useRef(null);
 
@@ -31,7 +32,9 @@ export default function CodeEditor() {
     }
 
     useEffect(() => {
-        if (localStorage.getItem("code")) {
+        if(props.example) {
+            setTDrawState({ ...TDrawState, code: Buffer.from(props.example, "base64").toString() });
+        } else if (localStorage.getItem("code")) {
             setTDrawState({ ...TDrawState, code: Buffer.from(localStorage.getItem("code"), "base64").toString() });
         } else {
             setTDrawState({ ...TDrawState, code: defaultCode });
@@ -44,7 +47,8 @@ export default function CodeEditor() {
     }
 
     const options = {
-        automaticLayout: true
+        automaticLayout: true,
+        readOnly: props.example
     }
 
     return (
