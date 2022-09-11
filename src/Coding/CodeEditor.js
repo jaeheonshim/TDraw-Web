@@ -2,7 +2,7 @@ import Editor from "@monaco-editor/react";
 import { Buffer } from 'buffer';
 import * as monaco from "monaco-editor"
 import { useContext, useEffect, useRef } from "react";
-import { TDrawContext } from "./App";
+import { TDrawContext } from "../App";
 
 const defaultCode = `
 import com.jaeheonshim.tdraw.turtle.Turtle;

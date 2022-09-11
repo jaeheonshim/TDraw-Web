@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { TDrawContext } from "./App";
+import { TDrawContext } from "../App";
 import Canvas from "./Canvas"
 import CanvasControls from "./CanvasControls"
 import CanvasSlider from "./CanvasSlider";

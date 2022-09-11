@@ -1,12 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
-import Canvas from './Canvas';
-import CanvasControls from './CanvasControls';
-import DrawingContainer from './DrawingContainer';
-import CodeEditor from './CodeEditor';
+import Canvas from './Drawing/Canvas';
+import CanvasControls from './Drawing/CanvasControls';
+import DrawingContainer from './Drawing/DrawingContainer';
+import CodeEditor from './Coding/CodeEditor';
 import { createContext, useState } from 'react';
-import CodeRunToolbar from './CodeRunToolbar';
-import RunConsole from './RunConsole';
+import CodeRunToolbar from './Coding/CodeRunToolbar';
+import RunConsole from './Coding/RunConsole';
 import axios from 'axios';
 import { Buffer } from 'buffer';
 import { Col, Container, Navbar, Row, Tab, Tabs } from 'react-bootstrap';
