@@ -11,6 +11,7 @@ import { Buffer } from 'buffer';
 import { Col, Container, Nav, Navbar, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
 import Editor from '@monaco-editor/react';
 import examples from "./examples.json"
+import SplashScreen from './SplashScreen';
 
 export const TDrawContext = createContext();
 
@@ -23,6 +24,11 @@ function App() {
   });
   
   const [isRunning, setIsRunning] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 1200);
 
   function onRun() {
     setIsRunning(true);
@@ -53,7 +59,8 @@ function App() {
   }
 
   return (
-    <div className="App h-100">
+    <div className="App h-100 overflow-hidden">
+      {isLoading && <SplashScreen />}
       <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
         <Container fluid>
           <Navbar bg="light" variant="light">
