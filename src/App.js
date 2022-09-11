@@ -16,19 +16,19 @@ export const TDrawContext = createContext();
 
 function App() {
   const [TDrawState, setTDrawState] = useState({
-    consoleContent: "Welcome to TDraw!\nhi\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+    consoleContent: "Welcome to TDraw!\n\n\n\n\n\n\\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTDraw is an open source turtle graphics web platform for the Java programming language."
   });
   
   const [isRunning, setIsRunning] = useState(false);
 
   function onRun() {
     setIsRunning(true);
+    setTDrawState({...TDrawState, consoleContent: "Sending your code to the server..."});
 
     axios.post("/submissions/run", {
       userProgram: Buffer.from(TDrawState.code).toString("base64")
     }).then((response) => {
-      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString(), drawJson: response.data.drawJson});
-      
+      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + "\nRun successfully completed.", drawJson: response.data.drawJson});
     }).finally(() => {
       setIsRunning(false);
     })
@@ -39,15 +39,15 @@ function App() {
   return (
     <div className="App h-100">
       <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
-        <Container className="h-100 d-flex flex-column" fluid>
-          <Navbar className="no-gutters" bg="light" variant="light">
+        <Container fluid>
+          <Navbar bg="light" variant="light">
             <Container fluid>
               <Navbar.Brand href="#home">TDraw</Navbar.Brand>
             </Container>
           </Navbar>
-          <Row className="no-gutters flex-grow-1" style={{flexBasis: "0"}}>
-            <Col className="h-100 d-flex flex-column overflow-auto">
-              <CodeRunToolbar className="pt-1 pb-1 mb-2 border-bottom" />
+          <Row className="content">
+            <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto">
+              <CodeRunToolbar isRunning={isRunning} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
               <div className="flex-grow-1">
                 <CodeEditor />
               </div>
@@ -57,7 +57,7 @@ function App() {
                 <DrawingContainer />
               </Row>
               <Row className="flex-grow-1 overflow-auto">
-                <RunConsole />
+                <RunConsole content={TDrawState.consoleContent} />
               </Row>
             </Col>
           </Row>

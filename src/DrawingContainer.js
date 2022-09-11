@@ -10,7 +10,7 @@ export default function DrawingContainer() {
     const [lastFrame, setLastFrame] = useState(TDrawState.drawJson ? TDrawState.drawJson.points.length - 1 : 0);
 
     useEffect(() => {
-        setCurrentFrame(0);
+        setCurrentFrame(TDrawState.drawJson ? TDrawState.drawJson.points.length - 1 : 0);
         setLastFrame(TDrawState.drawJson ? TDrawState.drawJson.points.length - 1 : 0)
     }, [TDrawState.drawJson]);
 
