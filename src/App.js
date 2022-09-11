@@ -28,6 +28,8 @@ function App() {
       userProgram: Buffer.from(TDrawState.code).toString("base64")
     }).then((response) => {
       setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + "\nRun successfully completed.", drawJson: response.data.drawJson});
+    }).catch((error) => {
+      setTDrawState({...TDrawState, consoleContent: "Run failed. (Server error)"});
     }).finally(() => {
       setIsRunning(false);
     })
@@ -57,7 +59,7 @@ function App() {
               </div>
             </Col>
             <Col className="border-left d-flex flex-column h-100">
-              <Row className="flex-shrink-0">
+              <Row className="flex-shrink-0 text-center">
                 <DrawingContainer />
               </Row>
               <Row className="flex-grow-1 overflow-auto">

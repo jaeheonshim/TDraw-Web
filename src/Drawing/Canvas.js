@@ -19,7 +19,7 @@ export default function Canvas(props) {
 
     const drawJson = props.json;
 
-    const [showTurtle, setShowTurtle] = useState(false);
+    const [showTurtle, setShowTurtle] = useState(true);
     
     const drawTurtle = (x, y, heading, context) => {
         const width = 20;
@@ -46,14 +46,25 @@ export default function Canvas(props) {
 
     const drawScene = (context) => {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-        if(!drawJson) return;
+        if(!drawJson || drawJson.points.length < 1) return;
 
         context.beginPath();
+
+        let prevColor = drawJson.points[0].color;
+
+        context.strokeStyle = prevColor;
 
         for(let i = 1; i <= props.frame; ++i) {
             const prev = drawJson.points[i - 1];
             const curr = drawJson.points[i];
             if(!curr) break;
+
+            if(curr.color != prevColor) {
+                context.strokeStyle = prevColor;
+                context.stroke();
+                context.beginPath();
+                prevColor = curr.color;
+            }
 
             context.moveTo(...toCenterPoint(prev.x, prev.y, context));
             context.lineTo(...toCenterPoint(curr.x, curr.y, context));
@@ -63,7 +74,8 @@ export default function Canvas(props) {
 
         const lastLocation = drawJson.points[props.frame];
         if(showTurtle) {
-            drawTurtle(Math.floor(lastLocation.x), Math.floor(lastLocation.y), lastLocation.heading, context);
+            const coords = toCenterPoint(Math.floor(lastLocation.x), Math.floor(lastLocation.y), context);
+            drawTurtle(coords[0], coords[1], lastLocation.heading, context);
         }
     }
 
