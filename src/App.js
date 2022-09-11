@@ -28,7 +28,7 @@ function App() {
     setIsRunning(true);
     setTDrawState({...TDrawState, consoleContent: "Sending your code to the server..."});
 
-    axios.post("/submissions/run", {
+    axios.post("https://tdraw-server.jaeheonshim.dev/submissions/run", {
       userProgram: Buffer.from(TDrawState.code).toString("base64")
     }).then((response) => {
       const additionalMessage = response.data.drawJson ? `${response.data.drawJson.points.length} movement points` : "";
@@ -70,7 +70,7 @@ function App() {
                 <Nav.Link target="_blank" href="https://jaeheonshim.dev/TDraw-Engine/DOCUMENTATION.html">Documentation</Nav.Link>
             </Nav>
           </Navbar>
-          <Row className="content">
+          <Row className="content overflow-auto">
             <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto" style={{minWidth: "30vh"}}>
               <CodeRunToolbar example={examples[example_id]} isRunning={isRunning} onRemix={onRemix} onReset={onReset} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
               <div className="flex-grow-1">
