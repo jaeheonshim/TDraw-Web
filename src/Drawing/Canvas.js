@@ -75,8 +75,10 @@ export default function Canvas(props) {
             }
         }
 
-        context.strokeStyle = drawJson.points[props.frame].color;
-        context.stroke();
+        if(!drawJson.points[props.frame]) {
+            context.strokeStyle = drawJson.points[props.frame].color;
+            context.stroke();
+        }
 
         const lastLocation = drawJson.points[Math.min(props.frame, drawJson.points.length - 1)];
         if(showTurtle) {
