@@ -48,6 +48,9 @@ export default function Canvas(props) {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         if(!drawJson || drawJson.points.length < 1) return;
 
+        context.fillStyle = drawJson.backgroundColor;
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
         context.beginPath();
 
         let prevColor = drawJson.points[0].color;

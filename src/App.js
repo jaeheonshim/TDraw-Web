@@ -12,6 +12,7 @@ import { Col, Container, Nav, Navbar, NavDropdown, Row, Tab, Tabs } from 'react-
 import Editor from '@monaco-editor/react';
 import examples from "./examples.json"
 import SplashScreen from './SplashScreen';
+import DocumentationHolder from './Components/DocumentationHolder';
 
 export const TDrawContext = createContext();
 
@@ -22,9 +23,10 @@ function App() {
   const [TDrawState, setTDrawState] = useState({
     consoleContent: "Welcome to TDraw!\nTDraw is an open source turtle graphics web platform for the Java programming language.\nUse the editor on the left to create and run your own turtle graphcis programs.\n\nTDraw is developed and maintained by Jaeheon Shim (github.com/jaeheonshim)"
   });
-  
+
   const [isRunning, setIsRunning] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showDocumentation, setShowDocumentation] = useState(false);
 
   setTimeout(() => {
     setIsLoading(false);
@@ -32,15 +34,15 @@ function App() {
 
   function onRun() {
     setIsRunning(true);
-    setTDrawState({...TDrawState, consoleContent: "Sending your code to the server..."});
+    setTDrawState({ ...TDrawState, consoleContent: "Sending your code to the server..." });
 
     axios.post("https://tdraw-server.jaeheonshim.dev/submissions/run", {
       userProgram: Buffer.from(TDrawState.code).toString("base64")
     }).then((response) => {
       const additionalMessage = response.data.drawJson ? `${response.data.drawJson.points.length} movement points` : "";
-      setTDrawState({...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + `\nRun successfully completed. UUID: ${response.data.uuid}\n` + additionalMessage, drawJson: response.data.drawJson});
+      setTDrawState({ ...TDrawState, consoleContent: Buffer.from(response.data.stdout, "base64").toString() + "\n\n" + new Date() + `\nRun successfully completed. UUID: ${response.data.uuid}\n` + additionalMessage, drawJson: response.data.drawJson });
     }).catch((error) => {
-      setTDrawState({...TDrawState, consoleContent: "Run failed. (Server error)"});
+      setTDrawState({ ...TDrawState, consoleContent: "Run failed. (Server error)" });
     }).finally(() => {
       setIsRunning(false);
     })
@@ -58,40 +60,59 @@ function App() {
     window.location = window.location.href.split("?")[0];
   }
 
+  function onDocumentationSwitchChange(e) {
+    const show = e.target.checked;
+    console.log(e);
+    setShowDocumentation(show);
+  }
+
   return (
     <div className="App h-100 overflow-hidden">
       {isLoading && <SplashScreen />}
-      <TDrawContext.Provider value={{TDrawState, setTDrawState}}>
+      <TDrawContext.Provider value={{ TDrawState, setTDrawState }}>
         <Container fluid>
           <Navbar bg="light" variant="light">
-              <Navbar.Brand href="/">TDraw</Navbar.Brand>
-              <Nav className="me-auto">
-                <NavDropdown title="Examples">
-                  <NavDropdown.Item href="?example=spiral">Spiral</NavDropdown.Item>
-                  <NavDropdown.Item href="?example=square_spiral">Square Spiral</NavDropdown.Item>
-                  <NavDropdown.Item href="?example=hexagonal_spiral">Hexagonal Spiral</NavDropdown.Item>
-                  <NavDropdown.Item href="?example=projectile_motion">Projectile Motion</NavDropdown.Item>
-                  <NavDropdown.Item href="?example=sierpinski">Sierpinski Triangle</NavDropdown.Item>
-                  <NavDropdown.Item href="?example=sine_wave">Sine Wave</NavDropdown.Item>
-                  <NavDropdown.Item href="?example=random">Random</NavDropdown.Item>
-                </NavDropdown>
-                <Nav.Link target="_blank" href="https://jaeheonshim.dev/TDraw-Engine/DOCUMENTATION.html">Documentation</Nav.Link>
+            <Navbar.Brand href="/">TDraw</Navbar.Brand>
+            <Nav className="me-auto">
+              <NavDropdown title="Examples">
+                <NavDropdown.Item href="?example=spiral">Spiral</NavDropdown.Item>
+                <NavDropdown.Item href="?example=square_spiral">Square Spiral</NavDropdown.Item>
+                <NavDropdown.Item href="?example=hexagonal_spiral">Hexagonal Spiral</NavDropdown.Item>
+                <NavDropdown.Item href="?example=projectile_motion">Projectile Motion</NavDropdown.Item>
+                <NavDropdown.Item href="?example=sierpinski">Sierpinski Triangle</NavDropdown.Item>
+                <NavDropdown.Item href="?example=sine_wave">Sine Wave</NavDropdown.Item>
+                <NavDropdown.Item href="?example=random">Random</NavDropdown.Item>
+              </NavDropdown>
+              <Nav.Link target="_blank" href="https://jaeheonshim.dev/TDraw-Engine/DOCUMENTATION.html">Documentation</Nav.Link>
             </Nav>
+            <Navbar.Text>
+              <div class="form-check form-switch">
+                <label className="form-check-label" style={{color: "black"}} for="showDocumentation">Show Documentation</label>
+                <input className="form-check-input mt-1" type="checkbox" role="switch" id="showDocumentation" onChange={onDocumentationSwitchChange} />
+              </div>
+            </Navbar.Text>
           </Navbar>
           <Row className="content overflow-auto">
-            <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto" style={{minWidth: "30vh"}}>
+            <Col className="h-100 d-flex flex-column flex-grow-1 overflow-auto" style={{ minWidth: "30vh" }}>
               <CodeRunToolbar example={examples[example_id]} isRunning={isRunning} onRemix={onRemix} onReset={onReset} onRun={onRun} className="pt-1 pb-1 mb-2 border-bottom" />
               <div className="flex-grow-1">
                 <CodeEditor example={examples[example_id]} />
               </div>
             </Col>
             <Col className="border-left d-flex flex-column h-100 w-50">
-              <Row className="flex-shrink-0 text-center">
-                <DrawingContainer />
-              </Row>
-              <Row className="flex-grow-1 overflow-auto">
-                <RunConsole content={TDrawState.consoleContent} />
-              </Row>
+              {!showDocumentation ?
+                <>
+                  <Row className="flex-shrink-0 text-center">
+                    <DrawingContainer />
+                  </Row>
+                  <Row className="flex-grow-1 overflow-auto">
+                    <RunConsole content={TDrawState.consoleContent} />
+                  </Row>
+                </>
+                :
+                <DocumentationHolder />
+              }
+
             </Col>
           </Row>
         </Container>
