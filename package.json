@@ -1,5 +1,5 @@
 {
-  "homepage": "tdraw.jaeheonshim.dev",
+  "homepage": "https://tdraw.jaeheonshim.dev",
   "name": "tdraw-web",
   "version": "0.1.0",
   "private": true,
@@ -48,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }

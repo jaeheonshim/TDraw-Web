@@ -20,7 +20,7 @@ function App() {
   const example_id = queryParams.get("example") && queryParams.get("example").trim().toLowerCase();
 
   const [TDrawState, setTDrawState] = useState({
-    consoleContent: "Welcome to TDraw!\n\nTDraw is an open source turtle graphics web platform for the Java programming language."
+    consoleContent: "Welcome to TDraw!\nTDraw is an open source turtle graphics web platform for the Java programming language.\nUse the editor on the left to create and run your own turtle graphcis programs.\n\nTDraw is developed and maintained by Jaeheon Shim (github.com/jaeheonshim)"
   });
   
   const [isRunning, setIsRunning] = useState(false);
@@ -72,6 +72,7 @@ function App() {
                   <NavDropdown.Item href="?example=hexagonal_spiral">Hexagonal Spiral</NavDropdown.Item>
                   <NavDropdown.Item href="?example=projectile_motion">Projectile Motion</NavDropdown.Item>
                   <NavDropdown.Item href="?example=sierpinski">Sierpinski Triangle</NavDropdown.Item>
+                  <NavDropdown.Item href="?example=sine_wave">Sine Wave</NavDropdown.Item>
                   <NavDropdown.Item href="?example=random">Random</NavDropdown.Item>
                 </NavDropdown>
                 <Nav.Link target="_blank" href="https://jaeheonshim.dev/TDraw-Engine/DOCUMENTATION.html">Documentation</Nav.Link>

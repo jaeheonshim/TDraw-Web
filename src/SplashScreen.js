@@ -12,11 +12,6 @@ export default function SplashScreen() {
                     />
                 </h1>
             </div>
-            <div className="flex-shrink-1" style={{color: "#c4c4c4", paddingRight: "0.5em"}}>
-                <h3 className="float-end">
-                    By Jaeheon Shim
-                </h3>
-            </div>
         </div>
     )
 }

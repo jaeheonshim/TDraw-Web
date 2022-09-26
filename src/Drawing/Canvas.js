@@ -72,6 +72,7 @@ export default function Canvas(props) {
             }
         }
 
+        context.strokeStyle = drawJson.points[props.frame].color;
         context.stroke();
 
         const lastLocation = drawJson.points[Math.min(props.frame, drawJson.points.length - 1)];
