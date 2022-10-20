@@ -75,7 +75,7 @@ export default function Canvas(props) {
             }
         }
 
-        if(!drawJson.points[props.frame]) {
+        if(drawJson.points[props.frame]) {
             context.strokeStyle = drawJson.points[props.frame].color;
             context.stroke();
         }
