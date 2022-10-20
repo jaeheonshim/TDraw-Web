@@ -14,3 +14,6 @@ TDraw was created as a teaching tool for my high school's computer science club.
 However, I could not find a good Java turtle graphics platform for us to use. Therefore, I sat down and created one of my own.
 
 For our lessons, we put up drawings as challenges for the students to draw, and offered prizes to those who could recreate them the fastest.
+
+## Plans for the future
+I think it would be cool to have a system where users can share their drawings with others. Perhaps if I have some free time I will pursue this project :)
